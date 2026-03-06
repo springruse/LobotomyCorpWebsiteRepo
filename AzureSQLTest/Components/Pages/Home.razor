@@ -8,6 +8,7 @@
 Welcome to your new app.
 @inject ApplicationDbContext db;
 @inject IBioWeaponable BioWeaponService;
+@inject IUserInfo UserInfoService;
 <h3>Lobotomy Bioweapons</h3>
 <ul>
     @foreach (var w in Weapons)
@@ -20,18 +21,27 @@ Welcome to your new app.
         <li>Attack Speed: @w.Attack_Speed</li>
         <li>Range: @w.Weapon_Range</li>
         <li>Description: @w.Weapon_Description</li>
-
+    }
+</ul>
+<ul>
+    @foreach (var user in UserInfo)
+    {
+        <li>ID: @user.Id</li>
+        <li>Name: @user.Username</li>
+        <li>Cost: @user.Password</li>
+        <li>Admin?: @user.Admin</li>
     }
 </ul>
 <p>@test</p>
 @code {
     //private ApplicationDbContext Context { get; set; }
     private List<BioWeapon>? Weapons;
+    private List<UserInfo>? UserInfo;
     public int test = 0;
     protected override void OnInitialized()
     {
         Weapons = BioWeaponService.GetBioWeapons();
-
+        UserInfo = UserInfoService.GetUserInfos();
 
 
 
