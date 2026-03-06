@@ -1,14 +1,54 @@
 ﻿@page "/"
 @using AzureSQLTest.Data
-
+@inject IBioWeaponable BioWeaponService
+@* @inject ApplicationDbContext db *@
+@rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-@inject ApplicationDbContext db;
-@inject IBioWeaponable BioWeaponService;
 <h3>Lobotomy Bioweapons</h3>
+
+<EditForm Model="@newWeapon"
+		  OnValidSubmit="@AddWeapon"
+		  OnInvalidSubmit="InvalidDebug"
+		  FormName="NewWeapon">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="form-group">
+		<label>Name</label>
+		<InputText @bind-Value="@newWeapon.Weapon_Name" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Cost</label>
+		<InputNumber @bind-Value="@newWeapon.Cost" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Grade</label>
+		<InputNumber @bind-Value="@newWeapon.Grade" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Attack Type</label>
+		<InputText @bind-Value="@newWeapon.Attack_Type" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Attack Damage</label>
+		<InputNumber @bind-Value="@newWeapon.Attack_Damage" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Attack Speed</label>
+		<InputText @bind-Value="@newWeapon.Attack_Speed" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Range</label>
+		<InputText @bind-Value="@newWeapon.Weapon_Range" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Description</label>
+		<InputTextArea @bind-Value="@newWeapon.Weapon_Description" class="form-control" />
+	</div>
+
+	<button type="submit" class="btn btn-primary">Add Weapon</button>
+</EditForm>
 <table class="table">
 	<thead>
 		<tr>
@@ -40,19 +80,19 @@ Welcome to your new app.
 	</thead>
 	<tbody>
 
-	@foreach (var w in Weapons)
-	{
-		<tr>
-			<td>Name: @w.Weapon_Name</td>
-			<td>Cost: @w.Cost</td>
-			<td>Grade: @w.Grade</td>
-			<td>Attack type: @w.Attack_Type</td>
-			<td>Attack Damage: @w.Attack_Damage</td>
-			<td>Attack Speed: @w.Attack_Speed</td>
-			<td>Range: @w.Weapon_Range</td>
-			<td>Description: @w.Weapon_Description</td>
-		</tr>
-	}
+		@foreach (var w in Weapons)
+		{
+			<tr>
+				<td>Name: @w.Weapon_Name</td>
+				<td>Cost: @w.Cost</td>
+				<td>Grade: @w.Grade</td>
+				<td>Attack type: @w.Attack_Type</td>
+				<td>Attack Damage: @w.Attack_Damage</td>
+				<td>Attack Speed: @w.Attack_Speed</td>
+				<td>Range: @w.Weapon_Range</td>
+				<td>Description: @w.Weapon_Description</td>
+			</tr>
+		}
 	</tbody>
 
 </table>
@@ -60,7 +100,21 @@ Welcome to your new app.
 @code {
 	//private ApplicationDbContext Context { get; set; }
 	private List<BioWeapon>? Weapons;
+	private BioWeapon newWeapon = new BioWeapon();
+	private void AddWeapon()
+	{
+		BioWeaponService.AddBioWeapon(newWeapon);
+		Weapons = BioWeaponService.GetBioWeapons();
+		newWeapon = new BioWeapon();
+		//editContext = new EditContext(newWeapon);
+		StateHasChanged();
+	}
 
+	private void InvalidDebug(EditContext editContext)
+	{
+		var test = editContext;
+		Console.WriteLine("Invalid form submission");
+	}
 	protected override void OnInitialized()
 	{
 		Weapons = BioWeaponService.GetBioWeapons();
