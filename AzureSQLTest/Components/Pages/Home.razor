@@ -9,43 +9,60 @@ Welcome to your new app.
 @inject ApplicationDbContext db;
 @inject IBioWeaponable BioWeaponService;
 <h3>Lobotomy Bioweapons</h3>
-<ul>
-    @foreach (var w in Weapons)
-    {
-        <li>Name: @w.Weapon_Name</li>
-        <li>Cost: @w.Cost</li>
-        <li>Grade: @w.Grade</li>
-        <li>Attack type: @w.Weapon_Name</li>
-        <li>Attack Damage: @w.Attack_Damage</li>
-        <li>Attack Speed: @w.Attack_Speed</li>
-        <li>Range: @w.Weapon_Range</li>
-        <li>Description: @w.Weapon_Description</li>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Name
+			</th>
+			<th>
+				Cost
+			</th>
+			<th>
+				Grade
+			</th>
+			<th>
+				Attack Type
+			</th>
+			<th>
+				Attack Damage
+			</th>
+			<th>
+				Attack Speed
+			</th>
+			<th>
+				Range
+			</th>
+			<th>
+				Description
+			</th>
+		</tr>
+	</thead>
+	<tbody>
 
-    }
-</ul>
-<p>@test</p>
+	@foreach (var w in Weapons)
+	{
+		<tr>
+			<td>Name: @w.Weapon_Name</td>
+			<td>Cost: @w.Cost</td>
+			<td>Grade: @w.Grade</td>
+			<td>Attack type: @w.Attack_Type</td>
+			<td>Attack Damage: @w.Attack_Damage</td>
+			<td>Attack Speed: @w.Attack_Speed</td>
+			<td>Range: @w.Weapon_Range</td>
+			<td>Description: @w.Weapon_Description</td>
+		</tr>
+	}
+	</tbody>
+
+</table>
+
 @code {
-    //private ApplicationDbContext Context { get; set; }
-    private List<BioWeapon>? Weapons;
-    public int test = 0;
-    protected override void OnInitialized()
-    {
-        Weapons = BioWeaponService.GetBioWeapons();
+	//private ApplicationDbContext Context { get; set; }
+	private List<BioWeapon>? Weapons;
 
-
-
-
-
-
-
-        //RelationalDatabaseFacadeExtensions.BeginTransaction(this);
-        //System.FormattableString query = $"SELECT * FROM BioWeapons";
-        //db.Database.SetConnectionString("DefaultConnection");
-        //db.Database.OpenConnection();
-        //test=db.Database.ExecuteSql(query);
-        // using var session = DocumentStore.OpenSession();
-        // Weapons = session.Query<BioWeapon>()
-        //                  .Where(w => w.Grade > 5)
-        //                  .ToList();
-    }
+	protected override void OnInitialized()
+	{
+		Weapons = BioWeaponService.GetBioWeapons();
+	}
 }
