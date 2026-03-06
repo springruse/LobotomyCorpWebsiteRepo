@@ -1,4 +1,5 @@
 using AzureSQLTest.Components;
+using AzureSQLTest.Data;
 using AzureSQLTest.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IBioWeaponable, BioWeaponDbService>();
 // Test database connection
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
@@ -27,7 +29,44 @@ using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 }
 
 var app = builder.Build();
+// Diagnostic: log effective DB and check table presence
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var conn = db.Database.GetDbConnection();
+    try
+    {
+        Console.WriteLine($"Connection string in use: {conn}");
+        Console.WriteLine($"DataSource: {conn.DataSource}");
+        Console.WriteLine($"Database: {conn.Database}");
+        conn.Open();
 
+        using (var cmd = conn.CreateCommand())
+        {
+            cmd.CommandText = "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'BioWeapons'";
+            var result = cmd.ExecuteScalar();
+            var tableCount = Convert.ToInt32(result);
+            if (tableCount > 0)
+                Console.WriteLine("✅ Table 'BioWeapons' exists in this database.");
+            else
+                Console.WriteLine("❌ Table 'BioWeapons' NOT found in this database. Check database and schema.");
+        }
+
+        // Optional: automatically apply pending EF migrations (use with caution in production)
+        // db.Database.Migrate();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ DB diagnostic failure: {ex.Message}");
+    }
+    finally
+    {
+        if (conn.State == System.Data.ConnectionState.Open)
+            conn.Close();
+    }
+}
+
+// Continue pipeline...
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

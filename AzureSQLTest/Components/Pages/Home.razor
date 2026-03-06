@@ -1,7 +1,51 @@
 ﻿@page "/"
+@using AzureSQLTest.Data
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
+@inject ApplicationDbContext db;
+@inject IBioWeaponable BioWeaponService;
+<h3>Lobotomy Bioweapons</h3>
+<ul>
+    @foreach (var w in Weapons)
+    {
+        <li>Name: @w.Weapon_Name</li>
+        <li>Cost: @w.Cost</li>
+        <li>Grade: @w.Grade</li>
+        <li>Attack type: @w.Weapon_Name</li>
+        <li>Attack Damage: @w.Attack_Damage</li>
+        <li>Attack Speed: @w.Attack_Speed</li>
+        <li>Range: @w.Weapon_Range</li>
+        <li>Description: @w.Weapon_Description</li>
+
+    }
+</ul>
+<p>@test</p>
+@code {
+    //private ApplicationDbContext Context { get; set; }
+    private List<BioWeapon>? Weapons;
+    public int test = 0;
+    protected override void OnInitialized()
+    {
+        Weapons = BioWeaponService.GetBioWeapons();
+
+
+
+
+
+
+
+        //RelationalDatabaseFacadeExtensions.BeginTransaction(this);
+        //System.FormattableString query = $"SELECT * FROM BioWeapons";
+        //db.Database.SetConnectionString("DefaultConnection");
+        //db.Database.OpenConnection();
+        //test=db.Database.ExecuteSql(query);
+        // using var session = DocumentStore.OpenSession();
+        // Weapons = session.Query<BioWeapon>()
+        //                  .Where(w => w.Grade > 5)
+        //                  .ToList();
+    }
+}

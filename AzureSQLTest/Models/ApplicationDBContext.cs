@@ -11,5 +11,6 @@
 
         // Your tables will go here, like:
         // public DbSet<YourModel> YourModels { get; set; }
+        public DbSet<BioWeapon> BioWeapons { get; set; }
     }
 }
