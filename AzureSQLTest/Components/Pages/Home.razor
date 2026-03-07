@@ -120,7 +120,7 @@
 		if (delWeapon != null)
 		{
 			BioWeaponService.DeleteBioWeapon(id);
-			//videogamesToDisplay = BioWeaponService.GetAllGames().ToList();
+			Weapons = BioWeaponService.GetBioWeapons();
 		}
 		StateHasChanged();
 	}
