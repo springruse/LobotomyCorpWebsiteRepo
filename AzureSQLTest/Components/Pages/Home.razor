@@ -76,22 +76,14 @@
 			<th>
 				Description
 			</th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody>
 
 		@foreach (var w in Weapons)
 		{
-			<tr>
-				<td>Name: @w.Weapon_Name</td>
-				<td>Cost: @w.Cost</td>
-				<td>Grade: @w.Grade</td>
-				<td>Attack type: @w.Attack_Type</td>
-				<td>Attack Damage: @w.Attack_Damage</td>
-				<td>Attack Speed: @w.Attack_Speed</td>
-				<td>Range: @w.Weapon_Range</td>
-				<td>Description: @w.Weapon_Description</td>
-			</tr>
+			<AzureSQLTest.Components.Subs.WeaponDisplay Weapon="w" OnDelete="OnDeleteClick" />
 		}
 	</tbody>
 
@@ -118,5 +110,18 @@
 	protected override void OnInitialized()
 	{
 		Weapons = BioWeaponService.GetBioWeapons();
+	}
+
+
+	public void OnDeleteClick(int id)
+	{
+		// Parent handles deletion and refreshes its list
+		var delWeapon = BioWeaponService.GetBioWeapons().FirstOrDefault(w =>w.Id ==id);
+		if (delWeapon != null)
+		{
+			BioWeaponService.DeleteBioWeapon(id);
+			//videogamesToDisplay = BioWeaponService.GetAllGames().ToList();
+		}
+		StateHasChanged();
 	}
 }
