@@ -158,14 +158,19 @@ else
 			<th>
 				Description
 			</th>
-			<th></th>
+			<th>
+				Delete Weapon
+			</th>
+			<th>
+				Clone Weapon
+			</th>
 		</tr>
 	</thead>
 	<tbody>
 
 		@foreach (var w in Weapons)
 		{
-			<AzureSQLTest.Components.Subs.WeaponDisplay Weapon="w" OnDelete="OnDeleteClick" />
+			<AzureSQLTest.Components.Subs.WeaponDisplay Weapon="w" OnDelete="OnDeleteClick" OnClone="OnCloneClick" />
 		}
 	</tbody>
 
@@ -208,6 +213,27 @@ else
 		if (delWeapon != null)
 		{
 			BioWeaponService.DeleteBioWeapon(id);
+			Weapons = BioWeaponService.GetBioWeapons();
+		}
+		StateHasChanged();
+	}
+
+	public void OnCloneClick(int id)
+	{
+		var cloneWeapon = BioWeaponService.GetBioWeapons().FirstOrDefault(w => w.Id == id);
+		if (cloneWeapon != null)
+		{
+			BioWeaponService.AddBioWeapon(new BioWeapon
+			{
+				Weapon_Name = cloneWeapon.Weapon_Name,
+				Cost = cloneWeapon.Cost,
+				Grade = cloneWeapon.Grade,
+				Attack_Type = cloneWeapon.Attack_Type,
+				Attack_Damage = cloneWeapon.Attack_Damage,
+				Attack_Speed = cloneWeapon.Attack_Speed,
+				Weapon_Range = cloneWeapon.Weapon_Range,
+				Weapon_Description = cloneWeapon.Weapon_Description
+			});
 			Weapons = BioWeaponService.GetBioWeapons();
 		}
 		StateHasChanged();
