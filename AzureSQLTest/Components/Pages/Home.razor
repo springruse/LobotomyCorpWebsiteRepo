@@ -49,6 +49,88 @@
 
 	<button type="submit" class="btn btn-primary">Add Weapon</button>
 </EditForm>
+
+<br />
+<label for="searchName"> Sort by Title:</label>
+<InputText id="searchName" @bind-Value="filterName" />
+@if (filterName != null)
+{
+	if (filterName != "")
+	{
+		filterName = filterName.ToLower();
+		Weapons = BioWeaponService.GetBioWeapons()
+		.Where(weapon => weapon.Weapon_Name.ToLower().Contains(filterName))
+		.OrderByDescending(weapon => weapon.Weapon_Name.ToLower().Contains(filterName))
+		.ToList<BioWeapon>();
+
+	}
+	else
+	{
+		Weapons = BioWeaponService.GetBioWeapons();
+	}
+}
+
+
+@*
+<label for="searchPlatform"> Sort by Platform:</label>
+<InputText id="searchPlatform" @bind-Value="filterPlatform" />
+@if (filterPlatform != null)
+{
+	if (filterPlatform != "")
+	{
+		filterPlatform = filterPlatform.ToLower();
+		videogamesToDisplay = videogamesToDisplay.Where(v => v.Platform.ToLower().Contains(filterPlatform)).OrderByDescending(v => v.Platform.ToLower().Contains(filterPlatform)).ToList<Videogame>();
+		//videogamesToDisplay = SortByString(filterPlatform, "platform");
+	}
+
+}
+
+<label for="searchGenre"> Sort by Genre:</label>
+<InputText id="searchGenre" @bind-Value="filterGenre" />
+@if (filterGenre != null)
+{
+	if (filterGenre != "")
+	{
+		filterGenre = filterGenre.ToLower();
+		videogamesToDisplay = videogamesToDisplay.Where(v => v.Genre.ToLower().Contains(filterGenre)).OrderByDescending(v => v.Genre.ToLower().Contains(filterGenre)).ToList<Videogame>();
+
+	}
+
+}
+<br />
+<label for="searchESRB"> Sort by Rating:</label>
+
+<InputRadioGroup TValue="ESRB" id="searchESRB" @bind-Value="filterESRB">
+	<ul class="no-bullets">
+
+		@foreach (var rating in ESRB_List)
+		{
+			<li>
+				<InputRadio Value="rating" />
+				@rating
+			</li>
+
+		}
+	</ul>
+</InputRadioGroup>
+@if (filterESRB != ESRB.NULL)
+{
+	videogamesToDisplay = videogamesToDisplay.Where(v => v.Rating.Equals(filterESRB)).OrderByDescending(v => v.Rating.Equals(filterESRB)).ToList<Videogame>();
+}
+
+
+<br />
+<button type="button" @onclick="ClearFilters"> Clear Filters</button>
+*@
+@if (Weapons == BioWeaponService.GetBioWeapons() || Weapons.Count ==BioWeaponService.GetBioWeapons().Count)
+{
+	<p>You are viewing all @BioWeaponService.GetBioWeapons().Count weapons!</p>
+}
+else
+{
+	<p>You are viewing @Weapons.Count weapons out of @BioWeaponService.GetBioWeapons().Count</p>
+}
+
 <table class="table">
 	<thead>
 		<tr>
@@ -93,6 +175,12 @@
 	//private ApplicationDbContext Context { get; set; }
 	private List<BioWeapon>? Weapons;
 	private BioWeapon newWeapon = new BioWeapon();
+
+	public string? filterName;
+
+
+
+
 	private void AddWeapon()
 	{
 		BioWeaponService.AddBioWeapon(newWeapon);
