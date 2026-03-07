@@ -12,7 +12,12 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<UserInfoDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserConnection")));
+
 builder.Services.AddScoped<IBioWeaponable, BioWeaponDbService>();
+builder.Services.AddScoped<IUserInfo, UserInfoDbService>();
+
 // Test database connection
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
