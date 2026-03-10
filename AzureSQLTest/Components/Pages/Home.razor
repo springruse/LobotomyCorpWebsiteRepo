@@ -5,6 +5,12 @@
 @rendermode InteractiveServer
 <PageTitle>Home</PageTitle>
 
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+@inject ApplicationDbContext db;
+@inject IBioWeaponable BioWeaponService;
+@inject IUserInfo UserInfoService;
 <h3>Lobotomy Bioweapons</h3>
 
 <EditForm Model="@newWeapon"
@@ -184,6 +190,14 @@ else
 	public string? filterName;
 
 
+    //private ApplicationDbContext Context { get; set; }
+    private List<BioWeapon>? Weapons;
+    private List<UserInfo>? UserInfo;
+    public int test = 0;
+    protected override void OnInitialized()
+    {
+        Weapons = BioWeaponService.GetBioWeapons();
+        UserInfo = UserInfoService.GetUserInfos();
 
 
 	private void AddWeapon()
