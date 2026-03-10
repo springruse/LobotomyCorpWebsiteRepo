@@ -3,21 +3,30 @@
     font-display: swap;
     src: url('fonts/norwester.ttf') format('truetype');
 }
+
 html, body {
-/*    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    /*    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-family: verdana,arial,helvetica,sans-serif;*/
-    font-family:norwester,Verdana;
-/*    font-size: 0.82em;*/
+    font-family: norwester,Verdana;
+    color: white;
+    background-image: url("logo.png");
+    background-repeat: no-repeat;
+    background-position: right top;
+    /*    background-position: center;*/
+    background-size: 1490px 1000px;
+    /*    background-attachment:fixed;*/
+    /*    font-size: 0.82em;*/
 }
 /*SCP*/
 h1, h2, h3, h4, h5, h6 {
-/*    font-family: "Trebuchet MS", Trebuchet, Verdana, Arial, Helvetica;*/
+    /*    font-family: "Trebuchet MS", Trebuchet, Verdana, Arial, Helvetica;*/
 }
 
 h1 {
     font-size: 190%;
     font-weight: normal;
 }
+
 
 h2 {
     font-weight: normal;
@@ -55,7 +64,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
