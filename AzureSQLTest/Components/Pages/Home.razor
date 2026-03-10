@@ -1,15 +1,17 @@
 ﻿@page "/"
 @using AzureSQLTest.Data
-@inject IBioWeaponable BioWeaponService
-@* @inject ApplicationDbContext db *@
-@rendermode InteractiveServer
-<PageTitle>Home</PageTitle>
 
+
+
+
+<PageTitle>Home</PageTitle>
+@inject IBioWeaponable BioWeaponService
+
+@* @inject AzureSQLTest.Data.ApplicationDbContext db; *@
 <h1>Hello, world!</h1>
 
 Welcome to your new app.
-@inject ApplicationDbContext db;
-@inject IBioWeaponable BioWeaponService;
+
 @inject IUserInfo UserInfoService;
 <h3>Lobotomy Bioweapons</h3>
 
@@ -77,57 +79,7 @@ Welcome to your new app.
 }
 
 
-@*
-<label for="searchPlatform"> Sort by Platform:</label>
-<InputText id="searchPlatform" @bind-Value="filterPlatform" />
-@if (filterPlatform != null)
-{
-	if (filterPlatform != "")
-	{
-		filterPlatform = filterPlatform.ToLower();
-		videogamesToDisplay = videogamesToDisplay.Where(v => v.Platform.ToLower().Contains(filterPlatform)).OrderByDescending(v => v.Platform.ToLower().Contains(filterPlatform)).ToList<Videogame>();
-		//videogamesToDisplay = SortByString(filterPlatform, "platform");
-	}
 
-}
-
-<label for="searchGenre"> Sort by Genre:</label>
-<InputText id="searchGenre" @bind-Value="filterGenre" />
-@if (filterGenre != null)
-{
-	if (filterGenre != "")
-	{
-		filterGenre = filterGenre.ToLower();
-		videogamesToDisplay = videogamesToDisplay.Where(v => v.Genre.ToLower().Contains(filterGenre)).OrderByDescending(v => v.Genre.ToLower().Contains(filterGenre)).ToList<Videogame>();
-
-	}
-
-}
-<br />
-<label for="searchESRB"> Sort by Rating:</label>
-
-<InputRadioGroup TValue="ESRB" id="searchESRB" @bind-Value="filterESRB">
-	<ul class="no-bullets">
-
-		@foreach (var rating in ESRB_List)
-		{
-			<li>
-				<InputRadio Value="rating" />
-				@rating
-			</li>
-
-		}
-	</ul>
-</InputRadioGroup>
-@if (filterESRB != ESRB.NULL)
-{
-	videogamesToDisplay = videogamesToDisplay.Where(v => v.Rating.Equals(filterESRB)).OrderByDescending(v => v.Rating.Equals(filterESRB)).ToList<Videogame>();
-}
-
-
-<br />
-<button type="button" @onclick="ClearFilters"> Clear Filters</button>
-*@
 @if (Weapons == BioWeaponService.GetBioWeapons() || Weapons.Count ==BioWeaponService.GetBioWeapons().Count)
 {
 	<p>You are viewing all @BioWeaponService.GetBioWeapons().Count weapons!</p>
@@ -181,6 +133,16 @@ else
 	</tbody>
 
 </table>
+<ul>
+	@foreach (var user in UserInfo)
+	{
+		<li>ID: @user.Id</li>
+		<li>Name: @user.Username</li>
+		<li>Cost: @user.Password</li>
+		<li>Admin?: @user.Admin</li>
+	}
+	
+</ul>
 
 @code {
 	//private ApplicationDbContext Context { get; set; }
@@ -190,16 +152,16 @@ else
 	public string? filterName;
 
 
-    //private ApplicationDbContext Context { get; set; }
-    private List<BioWeapon>? Weapons;
-    private List<UserInfo>? UserInfo;
-    public int test = 0;
-    protected override void OnInitialized()
-    {
-        Weapons = BioWeaponService.GetBioWeapons();
-        UserInfo = UserInfoService.GetUserInfos();
+	//private ApplicationDbContext Context { get; set; }
 
+	private List<UserInfo>? UserInfo;
+	public int test = 0;
+	protected override void OnInitialized()
+	{
+		Weapons = BioWeaponService.GetBioWeapons();
+		UserInfo = UserInfoService.GetUserInfos();
 
+	}
 	private void AddWeapon()
 	{
 		BioWeaponService.AddBioWeapon(newWeapon);
@@ -214,10 +176,7 @@ else
 		var test = editContext;
 		Console.WriteLine("Invalid form submission");
 	}
-	protected override void OnInitialized()
-	{
-		Weapons = BioWeaponService.GetBioWeapons();
-	}
+	
 
 
 	public void OnDeleteClick(int id)
@@ -252,4 +211,13 @@ else
 		}
 		StateHasChanged();
 	}
+	//RelationalDatabaseFacadeExtensions.BeginTransaction(this);
+	//System.FormattableString query = $"SELECT * FROM BioWeapons";
+	//db.Database.SetConnectionString("DefaultConnection");
+	//db.Database.OpenConnection();
+	//test=db.Database.ExecuteSql(query);
+	// using var session = DocumentStore.OpenSession();
+	// Weapons = session.Query<BioWeapon>()
+	//                  .Where(w => w.Grade > 5)
+	//                  .ToList();
 }
