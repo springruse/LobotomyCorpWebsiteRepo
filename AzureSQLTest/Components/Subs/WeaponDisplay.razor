@@ -1,0 +1,87 @@
+﻿@using AzureSQLTest.Data
+@rendermode InteractiveServer
+@inject IBioWeaponable BioWeaponService
+
+<tr>
+	<td>Name: @Weapon.Weapon_Name</td>
+	<td>Cost: @Weapon.Cost</td>
+	<td>Grade: @Weapon.Grade</td>
+	<td>Attack type: @Weapon.Attack_Type</td>
+	<td>Attack Damage: @Weapon.Attack_Damage</td>
+	<td>Attack Speed: @Weapon.Attack_Speed</td>
+	<td>Range: @Weapon.Weapon_Range</td>
+	<td>Description: @Weapon.Weapon_Description</td>
+	<td>
+		<button class="btn btn-danger" @onclick="HandleDelete">Delete</button>
+	</td>
+	<td>
+		<button class="btn btn-warning" @onclick="HandleClone">Clone</button>
+	</td>
+
+</tr>
+
+@code {
+	[Parameter]
+	public BioWeapon Weapon { get; set; }
+	[Parameter]
+	public EventCallback<int> OnDelete { get; set; }
+	[Parameter]
+	public EventCallback<int> OnClone { get; set; }
+	private async Task HandleDelete()
+	{
+		// Prefer notifying parent; parent will call the service and update UI.
+		if (OnDelete.HasDelegate)
+		{
+			await OnDelete.InvokeAsync(Weapon.Id);
+		}
+		else
+		{
+			// fallback (keeps backward compatibility)
+			BioWeaponService.DeleteBioWeapon(Weapon.Id);
+		}
+
+
+
+		// ensure UI updates
+		StateHasChanged();
+	}
+	private async Task HandleClone()
+	{
+		// Prefer notifying parent; parent will call the service and update UI.
+		if (OnClone.HasDelegate)
+		{
+			await OnClone.InvokeAsync(Weapon.Id);
+		}
+		else
+		{
+			// fallback (keeps backward compatibility)
+
+			BioWeapon? cloneWeapon = BioWeaponService.GetBioWeapons().FirstOrDefault(w => w.Id == Weapon.Id);
+
+			if (cloneWeapon != null)
+			{
+				BioWeaponService.AddBioWeapon(new BioWeapon
+				{
+					Weapon_Name = cloneWeapon.Weapon_Name,
+					Cost = cloneWeapon.Cost,
+					Grade = cloneWeapon.Grade,
+					Attack_Type = cloneWeapon.Attack_Type,
+					Attack_Damage = cloneWeapon.Attack_Damage,
+					Attack_Speed = cloneWeapon.Attack_Speed,
+					Weapon_Range = cloneWeapon.Weapon_Range,
+					Weapon_Description = cloneWeapon.Weapon_Description
+				});
+				
+			}
+		}
+
+
+
+		// ensure UI updates
+		StateHasChanged();
+	}
+	// public void HandleDelete(){
+	// 	BioWeaponService.DeleteBioWeapon(Weapon.Id);
+	// 	StateHasChanged();
+	// }
+}
