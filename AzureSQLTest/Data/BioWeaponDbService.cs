@@ -4,9 +4,9 @@ namespace AzureSQLTest.Data
 {
     public class BioWeaponDbService :IBioWeaponable
     {
-        private ApplicationDbContext Context { get; set; }
+        private WeaponDBContext Context { get; set; }
 
-        public BioWeaponDbService(ApplicationDbContext context)
+        public BioWeaponDbService(WeaponDBContext context)
         {
             Context = context;
         }

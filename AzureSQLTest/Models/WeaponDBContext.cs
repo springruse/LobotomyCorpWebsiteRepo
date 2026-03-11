@@ -2,9 +2,9 @@
 {
     using Microsoft.EntityFrameworkCore;
 
-    public class ApplicationDbContext : DbContext
+    public class WeaponDBContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public WeaponDBContext(DbContextOptions<WeaponDBContext> options)
             : base(options)
         {
         }
