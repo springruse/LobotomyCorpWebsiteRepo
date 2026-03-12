@@ -20,24 +20,23 @@
 		</div>
 
 		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="weather">
-				<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+			<NavLink class="nav-link" href="collection">
+		<AuthorizeView>
+			<Authorized>
+				<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weapon Collection
+			</Authorized>
+			<NotAuthorized>
+				<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Login required
+			</NotAuthorized>
+		</AuthorizeView>
+
 			</NavLink>
 		</div>
-		<div class="nav-item px-3">
-			<NavLink class="nav-link" href="auth">
-				<span class="bi bi-lock-nav-menu" aria-hidden="true"></span> Auth Required
-			</NavLink>
-		</div>
+		
 
 		
 		<AuthorizeView>
 			<Authorized>
-				<div class="nav-item px-3">
-					<NavLink class="nav-link" href="collection">
-						<span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Game Collection
-					</NavLink>
-				</div>
 				<div class="nav-item px-3">
 					<NavLink class="nav-link" href="Account/Manage">
 						<span class="bi bi-person-fill-nav-menu" aria-hidden="true"></span> @context.User.Identity?.Name

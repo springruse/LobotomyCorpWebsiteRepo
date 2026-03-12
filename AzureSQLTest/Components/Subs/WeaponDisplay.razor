@@ -56,7 +56,7 @@
         {
             // fallback (keeps backward compatibility)
 
-            BioWeapon? cloneWeapon = BioWeaponService.GetBioWeapons().FirstOrDefault(w => w.Id == Weapon.Id);
+            BioWeapon? cloneWeapon = BioWeaponService.GetBioWeapons(Weapon.User_Id).FirstOrDefault(w => w.Id == Weapon.Id);
 
             if (cloneWeapon != null)
             {
@@ -69,7 +69,8 @@
                     Attack_Damage = cloneWeapon.Attack_Damage,
                     Attack_Speed = cloneWeapon.Attack_Speed,
                     Weapon_Range = cloneWeapon.Weapon_Range,
-                    Weapon_Description = cloneWeapon.Weapon_Description
+                    Weapon_Description = cloneWeapon.Weapon_Description,
+					User_Id = cloneWeapon.User_Id
                 });
 
             }

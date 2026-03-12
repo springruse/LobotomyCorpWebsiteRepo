@@ -1,0 +1,239 @@
+﻿@page "/collection"
+@using AzureSQLTest.Data
+
+
+
+
+<PageTitle>Home</PageTitle>
+@inject IBioWeaponable BioWeaponService
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+
+@attribute [Authorize]
+@inject AuthenticationStateProvider AuthProvider
+
+
+@inject IUserInfo UserInfoService;
+<h3>Lobotomy Bioweapons</h3>
+
+<EditForm Model="@newWeapon"
+		  OnValidSubmit="@AddWeapon"
+		  OnInvalidSubmit="InvalidDebug"
+		  FormName="NewWeapon">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+
+	<div class="form-group">
+		<label>Name</label>
+		<InputText @bind-Value="@newWeapon.Weapon_Name" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Cost</label>
+		<InputNumber @bind-Value="@newWeapon.Cost" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Grade</label>
+		<InputNumber @bind-Value="@newWeapon.Grade" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Attack Type</label>
+		<InputText @bind-Value="@newWeapon.Attack_Type" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Attack Damage</label>
+		<InputNumber @bind-Value="@newWeapon.Attack_Damage" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Attack Speed</label>
+		<InputText @bind-Value="@newWeapon.Attack_Speed" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Range</label>
+		<InputText @bind-Value="@newWeapon.Weapon_Range" class="form-control" />
+	</div>
+	<div class="form-group">
+		<label>Description</label>
+		<InputTextArea @bind-Value="@newWeapon.Weapon_Description" class="form-control" />
+	</div>
+
+	<button type="submit" class="btn btn-primary">Add Weapon</button>
+</EditForm>
+
+<br />
+<label for="searchName"> Sort by Title:</label>
+<InputText id="searchName" @bind-Value="filterName" />
+@if (filterName != null)
+{
+	if (filterName != "")
+	{
+		filterName = filterName.ToLower();
+		Weapons = BioWeaponService.GetBioWeapons(userId)
+		.Where(weapon => weapon.Weapon_Name.ToLower().Contains(filterName))
+		.OrderByDescending(weapon => weapon.Weapon_Name.ToLower().Contains(filterName))
+		.ToList<BioWeapon>();
+
+	}
+	else
+	{
+		Weapons = BioWeaponService.GetBioWeapons(userId);
+	}
+}
+
+
+
+@if (Weapons == BioWeaponService.GetBioWeapons(userId) || Weapons.Count == BioWeaponService.GetBioWeapons(userId).Count)
+{
+	<p>You are viewing all @BioWeaponService.GetBioWeapons(userId).Count weapons!</p>
+}
+else
+{
+	<p>You are viewing @Weapons.Count weapons out of @BioWeaponService.GetBioWeapons(userId).Count</p>
+}
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				Name
+			</th>
+			<th>
+				Cost
+			</th>
+			<th>
+				Grade
+			</th>
+			<th>
+				Attack Type
+			</th>
+			<th>
+				Attack Damage
+			</th>
+			<th>
+				Attack Speed
+			</th>
+			<th>
+				Range
+			</th>
+			<th>
+				Description
+			</th>
+			<th>
+				Delete Weapon
+			</th>
+			<th>
+				Clone Weapon
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+
+		@foreach (var w in Weapons)
+		{
+			<AzureSQLTest.Components.Subs.WeaponDisplay Weapon="w" OnDelete="OnDeleteClick" OnClone="OnCloneClick" />
+		}
+	</tbody>
+
+</table>
+<ul>
+	@* @foreach (var user in UserInfo)
+	{
+		<li>ID: @user.Id</li>
+		<li>Name: @user.Username</li>
+		<li>Cost: @user.Password</li>
+		<li>Admin?: @user.Admin</li>
+	} *@
+
+</ul>
+
+@code {
+	//private ApplicationDbContext Context { get; set; }
+	private List<BioWeapon>? Weapons;
+	private BioWeapon newWeapon = new BioWeapon();
+	public string? userId;
+
+	public string? filterName;
+
+
+	//private ApplicationDbContext Context { get; set; }
+
+	private List<UserInfo>? UserInfo;
+	public int test = 0;
+	protected override void OnInitialized()
+	{
+		//UserInfo = UserInfoService.GetUserInfos();
+
+
+	}
+	protected override async Task OnInitializedAsync()
+	{
+		var authState = await AuthProvider.GetAuthenticationStateAsync();
+		var user = authState.User;
+		if (user.Identity != null && user.Identity.IsAuthenticated)
+		{
+			userId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+		}
+		Weapons = BioWeaponService.GetBioWeapons(userId);
+
+	}
+	private void AddWeapon()
+	{
+		newWeapon.User_Id = userId;
+		BioWeaponService.AddBioWeapon(newWeapon);
+		Weapons = BioWeaponService.GetBioWeapons(userId);
+		newWeapon = new BioWeapon();
+		//editContext = new EditContext(newWeapon);
+		StateHasChanged();
+	}
+
+	private void InvalidDebug(EditContext editContext)
+	{
+		var test = editContext;
+		Console.WriteLine("Invalid form submission");
+	}
+
+
+
+	public void OnDeleteClick(int id)
+	{
+		// Parent handles deletion and refreshes its list
+		var delWeapon = BioWeaponService.GetBioWeapons(userId).FirstOrDefault(w => w.Id == id);
+		if (delWeapon != null)
+		{
+			BioWeaponService.DeleteBioWeapon(id);
+			Weapons = BioWeaponService.GetBioWeapons(userId);
+		}
+		StateHasChanged();
+	}
+
+	public void OnCloneClick(int id)
+	{
+		var cloneWeapon = BioWeaponService.GetBioWeapons(userId).FirstOrDefault(w => w.Id == id);
+		if (cloneWeapon != null)
+		{
+			BioWeaponService.AddBioWeapon(new BioWeapon
+			{
+				Weapon_Name = cloneWeapon.Weapon_Name,
+				Cost = cloneWeapon.Cost,
+				Grade = cloneWeapon.Grade,
+				Attack_Type = cloneWeapon.Attack_Type,
+				Attack_Damage = cloneWeapon.Attack_Damage,
+				Attack_Speed = cloneWeapon.Attack_Speed,
+				Weapon_Range = cloneWeapon.Weapon_Range,
+				Weapon_Description = cloneWeapon.Weapon_Description,
+				User_Id = userId
+			});
+			Weapons = BioWeaponService.GetBioWeapons(userId);
+		}
+		StateHasChanged();
+	}
+	//RelationalDatabaseFacadeExtensions.BeginTransaction(this);
+	//System.FormattableString query = $"SELECT * FROM BioWeapons";
+	//db.Database.SetConnectionString("DefaultConnection");
+	//db.Database.OpenConnection();
+	//test=db.Database.ExecuteSql(query);
+	// using var session = DocumentStore.OpenSession();
+	// Weapons = session.Query<BioWeapon>()
+	//                  .Where(w => w.Grade > 5)
+	//                  .ToList();
+}

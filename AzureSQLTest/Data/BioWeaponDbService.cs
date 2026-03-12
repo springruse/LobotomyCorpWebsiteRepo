@@ -49,6 +49,9 @@ namespace AzureSQLTest.Data
             }
         }
 
-
+        public List<BioWeapon> GetBioWeapons(string? userId)
+        {
+            return Context.BioWeapons.Where(b => b.User_Id == userId).ToList();
+        }
     }
 }
