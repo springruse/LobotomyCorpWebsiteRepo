@@ -6,12 +6,14 @@
 
 main {
     flex: 1;
+    color: rgba(239, 237, 159);
+    outline: groove red;
 }
 
 
 .sidebar {
     background-image: url("../../LobCorpIcon.png"),linear-gradient(180deg, #000000 0%, #8B0000 50%, #CC0000 80%, #e8d48a 100%);
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-size: contain;
     background-position: center;
 }

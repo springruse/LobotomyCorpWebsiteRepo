@@ -8,12 +8,14 @@ html, body {
     /*    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-family: verdana,arial,helvetica,sans-serif;*/
     font-family: norwester,Verdana;
-    color: white;
+    color: rgba(239, 237, 159);
+    text-shadow: -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red, 1px 1px 0 red;
     background-image: url("logo.png");
     background-repeat: no-repeat;
     background-position: right top;
     /*    background-position: center;*/
     background-size: 1490px 1000px;
+    background-repeat: repeat;
     /*    background-attachment:fixed;*/
     /*    font-size: 0.82em;*/
 }
@@ -84,7 +86,7 @@ a, .btn-link {
 }
 
 .validation-message {
-    color: #e50000;
+    color: rgba(239, 237, 159);
 }
 
 .blazor-error-boundary {
@@ -109,3 +111,71 @@ a, .btn-link {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+.form-control {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 2px solid red;
+    background-color: rgba(239, 237, 159);
+}
+
+/* Table structure & spacing */
+.table {
+    width: 100%;
+    border-collapse: collapse; /* or separate */
+    border-spacing: 0;
+    margin: 20px 0;
+    border: 2px solid red;
+
+}
+    /* Header styling */
+    .table thead {
+        background-color: #92a8d1;
+    }
+
+        .table thead th {
+            padding: 12px 15px;
+            text-align: center;
+            font-weight: bold;
+            color: linen;
+            border: 2px solid red;
+            background-color: rgba(239, 237, 159);
+        }
+    /* Body row styling */
+    .table tbody tr {
+        border-bottom: 2px solid red; 
+        background-color: rgba(255, 255, 255, 0.1);
+
+    }
+
+        .table tbody tr:hover {
+            background-color: rgba(146, 168, 209, 0.3);
+            cursor: auto;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.4); /* alternating rows */
+        }
+    /* Cell styling */
+    .table td, .table th {
+        padding: 10px 15px;
+        border: 2px solid red;
+        color: rgba(239, 237, 159);
+        background-color: rgba(299, 237, 159);
+    }
+        /* Specific columns */
+        .table th:nth-child(2), /* Cost column */
+        .table td:nth-child(2) {
+            text-align: center;
+            font-weight: bold;
+        }
+        /* Delete/Clone button columns */
+        .table th:nth-child(9),
+        .table th:nth-child(10),
+        .table td:nth-child(9),
+        .table td:nth-child(10) {
+            text-align: center;
+            width: 120px;
+        }
