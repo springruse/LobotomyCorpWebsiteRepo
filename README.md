@@ -37,8 +37,7 @@ Make sure you have the following installed:
 - A database provider — **SQL Server**, **SQLite**, or whatever is configured in `appsettings.json`
 - Git
 
-**Note: this was made using a real sever and as such uses SQLSever, so using Sqlite on this project will required some setup and extra configuration**
-
+**Note: this was made using a real server and as such uses SQLSever, so using Sqlite on this project will required some setup and extra configuration**
 
 ### 1. Clone the Repository
 
