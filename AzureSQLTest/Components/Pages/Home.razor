@@ -3,7 +3,15 @@
 <PageTitle>Home</PageTitle>
 
 <h1>Welcome to the weapon collection!</h1>
-<h2>Please make a account, or log into a preexisting account to get started!</h2>
+<AuthorizeView>
+	<Authorized>
+		<h2>Click the collection tab to view your weapon collection!</h2>
+	</Authorized>
+	<NotAuthorized>
+		<h2>Please make a account, or log into a preexisting account to get started!</h2>
 
-<NavLink href="Account/Register">Register</NavLink>
-<NavLink href="Account/Login">Login</NavLink>
+		<NavLink href="Account/Register">Register</NavLink>
+		<NavLink href="Account/Login">Login</NavLink>
+
+	</NotAuthorized>
+</AuthorizeView>

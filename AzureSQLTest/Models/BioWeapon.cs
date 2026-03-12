@@ -8,7 +8,7 @@ namespace AzureSQLTest.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
+        
         public string User_Id { get; set; }
         [Required]
         public string Weapon_Name { get; set; }

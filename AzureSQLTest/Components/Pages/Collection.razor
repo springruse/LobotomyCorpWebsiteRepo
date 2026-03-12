@@ -1,7 +1,7 @@
 ﻿@page "/collection"
 @using AzureSQLTest.Data
 
-
+@rendermode InteractiveServer
 
 
 <PageTitle>Home</PageTitle>
@@ -23,35 +23,35 @@
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Name</label>
 		<InputText @bind-Value="@newWeapon.Weapon_Name" class="form-control" />
 	</div>
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Cost</label>
 		<InputNumber @bind-Value="@newWeapon.Cost" class="form-control" />
 	</div>
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Grade</label>
 		<InputNumber @bind-Value="@newWeapon.Grade" class="form-control" />
 	</div>
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Attack Type</label>
 		<InputText @bind-Value="@newWeapon.Attack_Type" class="form-control" />
 	</div>
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Attack Damage</label>
 		<InputNumber @bind-Value="@newWeapon.Attack_Damage" class="form-control" />
 	</div>
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Attack Speed</label>
 		<InputText @bind-Value="@newWeapon.Attack_Speed" class="form-control" />
 	</div>
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Range</label>
 		<InputText @bind-Value="@newWeapon.Weapon_Range" class="form-control" />
 	</div>
-	<div class="form-group">
+	<div class="form-group ">
 		<label>Description</label>
 		<InputTextArea @bind-Value="@newWeapon.Weapon_Description" class="form-control" />
 	</div>
